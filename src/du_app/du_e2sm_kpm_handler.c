@@ -1188,10 +1188,10 @@ uint8_t kpmProcActionDefinitionFmt3V3(E2SM_KPM_ActionDefinition_Format3_v300_t *
             return RFAILED;
         }
         else if(actionDefinFormat3->measCondList.list.array[i]->measType.present == MeasurementType_PR_measName){
-            index = kpmSliceMeasNameIsSupport(actionDefinFormat3->measCondList.list.array[i]->measType.choice.measName.buf);
+            index = kpmSliceMeasNameIsSupport(actionDefinFormat3->measCondList.list.array[i]->measType.choice.measName.buf);    //從ric傳來的ActionDefinFormat3->measCondList.list.array[i]->measType.choice.measName.buf定義了"DRB.UEThpDl.SNSSAI" ,"RRU.PrbUsedDl.SNSSAI.若odu支援就回傳index!=-1
             if(index != -1){
-                DU_LOG("\nINFO  -->  E2SM-KPM : Measurement name \"%s\" of Slice metric is valid", actionDefinFormat3->measCondList.list.array[i]->measType.choice.measName.buf);
-                memcpy(indicationMeasNameFmt2[sizeOfMeasNameFmt3], sliceMetricName[index], strlen((const char*)sliceMetricName[index])+1);
+                DU_LOG("\nINFO  -->  E2SM-KPM : Measurement name \"%s\" of Slice metric is valid", actionDefinFormat3->measCondList.list.array[i]->measType.choice.measName.buf);            //從ric傳來的ActionDefinFormat3->measCondList.list.array[i]->measType.choice.measName.buf定義了"DRB.UEThpDl.SNSSAI" ,"RRU.PrbUsedDl.SNSSAI
+                memcpy(indicationMeasNameFmt2[sizeOfMeasNameFmt3], sliceMetricName[index], strlen((const char*)sliceMetricName[index])+1);  //複製DRB.UEThpDl.SNSSAI" ,"RRU.PrbUsedDl.SNSSAI到indicationMeasNameFmt2
                 sizeOfMeasNameFmt3++;
             }else{
                 DU_LOG("\nINFO  -->  E2SM-KPM : Measurement name \"%s\" of Slice metric is invalid \n", actionDefinFormat3->measCondList.list.array[i]->measType.choice.measName.buf);
@@ -1304,7 +1304,7 @@ uint8_t kpmProcActionDefinitionV3(RICactionDefinition_t *ricdifin){
         return RFAILED;
     }
 
-    rval = aper_decode(0, &asn_DEF_E2SM_KPM_ActionDefinition_v300, (void **)&actionDefin, ricdifin->buf, ricdifin->size, 0, 0);
+    rval = aper_decode(0, &asn_DEF_E2SM_KPM_ActionDefinition_v300, (void **)&actionDefin, ricdifin->buf, ricdifin->size, 0, 0);    //解碼ric傳來的action defi.
     if(rval.code == RC_FAIL || rval.code == RC_WMORE)
     {
         DU_LOG("\nERROR  -->  E2SM-KPM : Could not decode Action Definition, %d", __LINE__);
@@ -1326,7 +1326,7 @@ uint8_t kpmProcActionDefinitionV3(RICactionDefinition_t *ricdifin){
             DU_LOG("\nINFO   -->  E2SM-KPM: Reporting Period format 1 = %d", reportingPeriodFmt1);
             break;
         case E2SM_KPM_ActionDefinition_v300__actionDefinition_formats_PR_actionDefinition_Format3:
-            ret = kpmProcActionDefinitionFmt3V3(actionDefin->actionDefinition_formats.choice.actionDefinition_Format3);
+            ret = kpmProcActionDefinitionFmt3V3(actionDefin->actionDefinition_formats.choice.actionDefinition_Format3);   //處理ric傳來的action defi.
             if(ret != ROK){
                 DU_LOG("\nERROR  -->  E2SM-KPM: Invaild Action Definition of Format 3, %d", __LINE__);
                 return RFAILED;
@@ -1703,7 +1703,7 @@ uint8_t kpmFillRicIndicationHeader(RICindicationHeader_t *ricIndicationHeader){
 
 uint8_t kpmFillRicIndicationHeaderV3(RICindicationHeader_t *ricIndicationHeader){
     uint8_t ret = ROK;
-    DU_LOG("\nINFO   -->  E2SM-KPM : Fill KPM RIC Indication Header");
+    DU_LOG("\nINFO   -->  E2SM-KPM : Fill KPM RIC Indication Headerv3");
     E2SM_KPM_IndicationHeader_v300_t *indicaHeader;
     DU_ALLOC(indicaHeader, sizeof(E2SM_KPM_IndicationHeader_v300_t));
     if(indicaHeader == NULL){
@@ -2202,6 +2202,8 @@ uint8_t kpmFillIndicationMessageFormat2(E2SM_KPM_IndicationMessage_Format2_t *in
                 DU_LOG("\nINFO   -->  E2SM-KPM : # %d Slice Measurement \"%s\" in slice {%d-%d%d%d} : %d", j, indicationMeasNameFmt2[index],
                 kpmSlicePmDb.snssai[i].sst, kpmSlicePmDb.snssai[i].sd[0], kpmSlicePmDb.snssai[i].sd[1],
                 kpmSlicePmDb.snssai[i].sd[2], kpmSlicePmDb.avgThpDl[i]);
+                DU_LOG("\nINFO   -->  kpmFillIndicationMessageFormat2kpmFillIndicationMessageFormat2kpmFillIndicationMessageFormat2");
+
             }
             else if(index == 1){
                 ret = kpmFillSliceMeasDataItem(measDataItem + cnt, kpmSlicePmDb.avgUsedPrb[i]);
@@ -2290,6 +2292,8 @@ uint8_t kpmFillIndicationMessageFormat2V3(E2SM_KPM_IndicationMessage_Format2_v30
                 DU_LOG("\nINFO   -->  E2SM-KPM : # %d Slice Measurement \"%s\" in slice {%d-%d%d%d} : %d", j, indicationMeasNameFmt2[index],
                 kpmSlicePmDb.snssai[i].sst, kpmSlicePmDb.snssai[i].sd[0], kpmSlicePmDb.snssai[i].sd[1],
                 kpmSlicePmDb.snssai[i].sd[2], kpmSlicePmDb.avgUsedPrb[i]);
+                DU_LOG("\nINFO   -->  kpmFillIndicationMessageFormat2V3kpmFillIndicationMessageFormat2V3kpmFillIndicationMessageFormat2V3");
+
             }
             else if(index = -1){
                 DU_LOG("\nERROR   -->  E2SM-KPM : Invalid Cell Measurement name, %d", __LINE__);

@@ -1156,6 +1156,7 @@ uint8_t procE2SetupRsp(E2AP_PDU_t *e2apMsg)
    DU_LOG("\nINFO   -->  E2AP : E2 Setup Response received"); 
    duCb.e2Status = TRUE; //Set E2 status as true
    e2SetRspMsg = &e2apMsg->choice.successfulOutcome->value.choice.E2setupResponse;
+   DU_LOG("\nINFO   --> %s",e2SetRspMsg); /*joejoejoejoe*/
 
    for(arrIdx=0; arrIdx<e2SetRspMsg->protocolIEs.list.count; arrIdx++)
    {
@@ -1828,10 +1829,11 @@ uint8_t BuildAndSendRicIndication(RICindicationHeader_t *ricIndicationHeader, RI
 
       if(SendE2APMsg(DU_APP_MEM_REGION, DU_POOL) != ROK)
       {
-	 DU_LOG("\nINFO   -->  E2AP : Sending RIC Indication Message");      
+	 DU_LOG("\nINFO   -->  E2AP : Failed to sending RIC Indication Message");      
 
       }
       ret = ROK;
+      DU_LOG("\nINFO   -->  E2AP : Sending RIC Indication Message");    
       break;
    }
    FreeRicIndication(e2apMsg);	

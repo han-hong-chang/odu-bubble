@@ -115,7 +115,7 @@ uint8_t kpmProcActionDefinitionFmt1(E2SM_KPM_ActionDefinition_Format1_t *actionD
 uint8_t kpmProcActionDefinitionFmt3(E2SM_KPM_ActionDefinition_Format3_t *actionDefinFormat3);
 uint8_t kpmProcEventTrigDefinitionFormat1(RICeventTriggerDefinition_t *defini);
 int kpmCellMeasNameIsSupport(uint8_t *measNameBuf);
-int kpmSliceMeasNameIsSupport(uint8_t *measNameBuf);
+int kpmIsSupport(uint8_t *measNameBuf);
 uint8_t kpmProcActionDefinition(RICactionDefinition_t *ricdifin);
 uint8_t kpmProcActionDefinitionFmt1V3(E2SM_KPM_ActionDefinition_Format1_v300_t *actionDefinFormat1);
 uint8_t kpmProcActionDefinitionFmt3V3(E2SM_KPM_ActionDefinition_Format3_v300_t *actionDefinFormat3);
